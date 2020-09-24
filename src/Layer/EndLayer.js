@@ -22,5 +22,7 @@ class GameOverLayer extends cc.Layer{
         
         let toTitleScene = new ToTitleScene();
         this.addComponent(toTitleScene);
+
+        this.addComponent(new GameLayerResizer());
     }
 }

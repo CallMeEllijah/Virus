@@ -37,5 +37,6 @@ class TitleLayer extends cc.Layer{
 
         let toMainScene = new ToMainScene();
         this.addComponent(toMainScene);
+        this.addComponent(new GameLayerResizer());
     }
 }
