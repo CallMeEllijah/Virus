@@ -1,4 +1,4 @@
-class HelloWorldScene2 extends cc.Scene{
+class EndScene extends cc.Scene{
     constructor(score){
         super();
         this.score = score;

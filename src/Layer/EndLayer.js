@@ -1,4 +1,4 @@
-class GameOverLayer extends cc.Layer{
+class EndLayer extends cc.Layer{
     constructor(score){
         super();
         var size = cc.winSize;
