@@ -15,7 +15,7 @@ class GameOverLayer extends cc.Layer{
         score_label.y = size.height / 2 ;
         this.addChild(score_label);
 
-        var reStartLabel = new cc.LabelTTF("press any key to Restart", 'Pixel', 30);
+        var reStartLabel = new cc.LabelTTF("press any key to Restart", 'Pixel', 20);
         reStartLabel.x = size.width / 2;
         reStartLabel.y = size.height / 2 - 200;
         this.addChild(reStartLabel);
