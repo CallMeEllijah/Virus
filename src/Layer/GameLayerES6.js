@@ -14,7 +14,7 @@ class GameLayerES6 extends cc.Layer{
         this.tileArray = [];
         this.tileTypes = 6;
 
-        this.size = cc.winSize;
+        this.size = this.getContentSize();
         this.xPosition = this.size.width/2 - this.tileSize*this.platform/2;
         this.yPosition = this.size.height/2 - this.tileSize*this.platform/2;
 
@@ -26,7 +26,7 @@ class GameLayerES6 extends cc.Layer{
         this.collisions = [];
 
         //space, where the foods at 
-        this.space = cc.Layer.create();
+        this.space = cc.LayerColor.create(cc.color(100,100,100,0),480,480);
         this.space.setPosition(this.xPosition, this.yPosition);
         this.addChild(this.space);
         
@@ -64,8 +64,8 @@ class GameLayerES6 extends cc.Layer{
             onMouseDown: this.onMouseDown
         },this);
 
-        this.addComponent(new GameLayerResizer());
-
+        //this.addComponent(new GameLayerResizer());
+        this.space.addComponent(new GameLayerResizer())
     }
 
     addTile(row, col){ //just adds tiles
@@ -104,7 +104,6 @@ class GameLayerES6 extends cc.Layer{
     }
 
     onMouseUp(event){ //gets the one the initial will switch with
-
         var sprite = null;
 
         var x = Math.floor((event.getLocationX() - this._node.xPosition)/this._node.tileSize);
@@ -198,6 +197,7 @@ class GameLayerES6 extends cc.Layer{
     onMouseDown(event){ //gets initial tile to switch with
         var x = Math.floor((event.getLocationX() - this._node.xPosition)/this._node.tileSize);
         var y = Math.floor((event.getLocationY() - this._node.yPosition)/this._node.tileSize);
+
         this._node.preX = x;
         this._node.preY = y;
     }

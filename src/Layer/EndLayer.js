@@ -1,7 +1,7 @@
-class GameOverLayer extends cc.Layer{
+class GameOverLayer extends cc.LayerColor{
     constructor(score){
-        super();
-        var size = cc.winSize;
+        super(cc.color(0,0,0,0),900,900);
+        var size = this.getContentSize();
 
         var gameOverLabel = new cc.LabelTTF("Game Over!", 'Pixel', 75);
         gameOverLabel.setFontFillColor(cc.color(255, 255, 0, 30));
@@ -14,14 +14,6 @@ class GameOverLayer extends cc.Layer{
         score_label.x = size.width / 2;
         score_label.y = size.height / 2 ;
         this.addChild(score_label);
-
-        var reStartLabel = new cc.LabelTTF("press any key to Restart", 'Pixel', 30);
-        reStartLabel.x = size.width / 2;
-        reStartLabel.y = size.height / 2 - 200;
-        this.addChild(reStartLabel);
-        
-        let toTitleScene = new ToTitleScene();
-        this.addComponent(toTitleScene);
 
         this.addComponent(new GameLayerResizer());
     }

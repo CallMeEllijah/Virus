@@ -12,25 +12,15 @@ class NineSliceLayout extends ccui.Layout{
         this.isPaused = false;
     }
 
-    createStartScreen(){
+    createStartScreen(){//create start button in title layer
         let popup = new ccui.RelativeBox();
         popup.setAnchorPoint(cc.p(.5,.5));
         popup.setPositionType(ccui.Widget.POSITION_PERCENT);
         popup.setPositionPercent(cc.p(.5,.5));
         popup.setSizeType(ccui.Widget.SIZE_PERCENT);
-        popup.setSizePercent(cc.p(.5,.5));
+        popup.setSizePercent(cc.p(.8,.8));
 
         this.addChild(popup);
-
-        // let logoPng = new ccui.ImageView(res.titleLogoPng, ccui.Widget.LOCAL_TEXTURE)
-        // logoPng.setScale9Enabled(true);
-        // logoPng.setCapInsets(cc.rect(20,20,20,20))
-        // logoPng.setContentSize(cc.size(500,500))
-        // let layoutParameter = new ccui.RelativeLayoutParameter();
-        // layoutParameter.setAlign(ccui.RelativeLayoutParameter.CENTER_IN_PARENT);
-        // layoutParameter.setMargin(0,0,0,0);
-        // logoPng.setLayoutParameter(layoutParameter)
-        // popup.addChild(logoPng)
 
         let startButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
 
@@ -54,7 +44,53 @@ class NineSliceLayout extends ccui.Layout{
         popup.addChild(startButton);
     }
 
-    createPauseButton(){
+    createEndScreen(){//create exit and restart buttons in end layer
+        let popup = new ccui.RelativeBox();
+        popup.setAnchorPoint(cc.p(.5,.5));
+        popup.setPositionType(ccui.Widget.POSITION_PERCENT);
+        popup.setPositionPercent(cc.p(.5,.5));
+        popup.setSizeType(ccui.Widget.SIZE_PERCENT);
+        popup.setSizePercent(cc.p(.5,.8));
+
+        this.addChild(popup);
+
+        let restartButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+
+        restartButton.setScale9Enabled(true);
+        restartButton.setCapInsets(cc.rect(20,20,0,20));
+        restartButton.setContentSize(cc.size(150, 50));
+        restartButton.setTitleFontSize(26);
+        restartButton.setTitleFontName("Pixel");
+        restartButton.setTitleText("Restart");
+
+        let layoutParameterRestart = new ccui.RelativeLayoutParameter();
+        layoutParameterRestart.setAlign(ccui.RelativeLayoutParameter.PARENT_RIGHT_BOTTOM);
+        layoutParameterRestart.setMargin(0,0,0,0);
+        restartButton.setLayoutParameter(layoutParameterRestart);
+
+        restartButton.addClickEventListener(this.restartClick.bind(this));
+
+        let exitButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+
+        exitButton.setScale9Enabled(true);
+        exitButton.setCapInsets(cc.rect(20,20,0,20));
+        exitButton.setContentSize(cc.size(150, 50));
+        exitButton.setTitleFontSize(26);
+        exitButton.setTitleFontName("Pixel");
+        exitButton.setTitleText("Exit");
+
+        let layoutParameterExit = new ccui.RelativeLayoutParameter();
+        layoutParameterExit.setAlign(ccui.RelativeLayoutParameter.PARENT_LEFT_BOTTOM);
+        layoutParameterExit.setMargin(0,0,0,0);
+        exitButton.setLayoutParameter(layoutParameterExit);
+
+        exitButton.addClickEventListener(this.exitClick.bind(this));
+        
+        popup.addChild(restartButton);
+        popup.addChild(exitButton);
+    }
+
+    createPauseButton(){//create pause button in game layer
         let popUp1 = new ccui.RelativeBox();
         this.popUp1 = popUp1;
         popUp1.setAnchorPoint(cc.p(0,0));
@@ -73,7 +109,7 @@ class NineSliceLayout extends ccui.Layout{
 
         button1.setScale9Enabled(true);
         button1.setCapInsets(cc.rect(20,20,0,20));
-        button1.setContentSize(cc.size(100, 100));
+        button1.setContentSize(cc.size(50, 50));
 
         button1.setTitleFontSize(26);
         button1.setTitleFontName("Pixel");
@@ -88,7 +124,7 @@ class NineSliceLayout extends ccui.Layout{
         popUp1.addChild(button1);
     }
 
-    createPopup(){
+    createPopup(){//create pause popup
         let popUp = new ccui.RelativeBox();
         this.popUp = popUp;
         popUp.setAnchorPoint(cc.p(.5,.5));
@@ -111,7 +147,7 @@ class NineSliceLayout extends ccui.Layout{
         popUp.addChild(text);
     }
 
-    createButtons(){
+    createButtons(){//create buttons in pause popup
         let popUp = this.popUp;
         let closeButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
 
@@ -169,41 +205,41 @@ class NineSliceLayout extends ccui.Layout{
         popUp.addChild(exitButton);
     }
 
-    closeClick(){
+    closeClick(){//close pause popup
         let scaleTo = new cc.ScaleTo(.2, 0);
         let callFunc = new cc.CallFunc(this.onFinish, this);
         scaleTo = new cc.EaseBackIn(scaleTo)
         this.popUp.runAction(new cc.sequence(scaleTo, callFunc));
     }
 
-    restartClick(){
+    restartClick(){//restart game
         cc.director.runScene(new GameScene());
     }
 
-    exitClick(){
+    exitClick(){//return to main menu
         cc.director.runScene(new TitleScene());
     }
 
-    pauseClick(){
+    pauseClick(){//pauses game using unscheduleUpdate
         if(!this.isPaused){
             this.pauseScreen();
             this.getParent().allChildren[0].pauseGame();
         }
     }
 
-    pauseScreen(){
+    pauseScreen(){//calls popup and button creations
             this.createPopup();
             this.createButtons();
             this.isPaused = true;
     }
 
-    onFinish(){
+    onFinish(){//resume game and close popup
         this.getParent().allChildren[0].contGame();
         this.getParent().removeChild(this.popUp);
         this.isPaused = false;
     }
 
-    startButtonClick(){
+    startButtonClick(){//for start button in title layer
         this.getParent().allChildren[0].toGameScene();
     }
 }
