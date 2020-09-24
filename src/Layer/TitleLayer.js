@@ -30,13 +30,17 @@ class TitleLayer extends cc.Layer{
         instructionlabel4.y = size.height / 2 - 100;
         this.addChild(instructionlabel4);
 
-        let startLabel = new cc.LabelTTF("press any key to start", 'Pixel', 30);
-        startLabel.x = size.width / 2;
-        startLabel.y = size.height / 2 - 200;
-        this.addChild(startLabel);
+        // let startLabel = new cc.LabelTTF("press any key to start", 'Pixel', 30);
+        // startLabel.x = size.width / 2;
+        // startLabel.y = size.height / 2 - 200;
+        // this.addChild(startLabel);
 
-        let toMainScene = new ToMainScene();
-        this.addComponent(toMainScene);
+        // let toMainScene = new ToMainScene();
+        // this.addComponent(toMainScene);
         this.addComponent(new GameLayerResizer());
+    }
+
+    toGameScene(){
+        cc.director.runScene(new GameScene());
     }
 }

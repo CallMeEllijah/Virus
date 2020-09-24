@@ -22,21 +22,24 @@ class NineSliceLayout extends ccui.Layout{
 
         this.addChild(popup);
 
-        let logoPng = new ccui.ImageView(res.titleLogoPng, ccui.Widget.LOCAL_TEXTURE)
-        logoPng.setScale9Enabled(true);
-        logoPng.setCapInsets(cc.rect(20,20,20,20))
-        logoPng.setContentSize(cc.size(500,500))
-        let layoutParameter = new ccui.RelativeLayoutParameter();
-        layoutParameter.setAlign(ccui.RelativeLayoutParameter.CENTER_IN_PARENT);
-        layoutParameter.setMargin(0,0,0,0);
-        logoPng.setLayoutParameter(layoutParameter)
-        popup.addChild(logoPng)
+        // let logoPng = new ccui.ImageView(res.titleLogoPng, ccui.Widget.LOCAL_TEXTURE)
+        // logoPng.setScale9Enabled(true);
+        // logoPng.setCapInsets(cc.rect(20,20,20,20))
+        // logoPng.setContentSize(cc.size(500,500))
+        // let layoutParameter = new ccui.RelativeLayoutParameter();
+        // layoutParameter.setAlign(ccui.RelativeLayoutParameter.CENTER_IN_PARENT);
+        // layoutParameter.setMargin(0,0,0,0);
+        // logoPng.setLayoutParameter(layoutParameter)
+        // popup.addChild(logoPng)
 
-        let startButton = new ccui.Button(res.buttonStartPng, res.buttonStartSelectedPng);
+        let startButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
 
         startButton.setScale9Enabled(true);
         startButton.setCapInsets(cc.rect(20,20,0,20));
         startButton.setContentSize(cc.size(100, 50));
+        startButton.setTitleFontSize(26);
+        startButton.setTitleFontName("Pixel");
+        startButton.setTitleText("Start");
 
         // startButton.setTitleFontSize(36);
         // startButton.setTitleFontName("Pixel");
@@ -81,7 +84,7 @@ class NineSliceLayout extends ccui.Layout{
         layoutParameter1.setMargin(0,0,0,20);
         button1.setLayoutParameter(layoutParameter1);
 
-        button1.addClickEventListener(this.onClick1.bind(this));
+        button1.addClickEventListener(this.pauseClick.bind(this));
         popUp1.addChild(button1);
     }
 
@@ -108,46 +111,80 @@ class NineSliceLayout extends ccui.Layout{
         popUp.addChild(text);
     }
 
-    createButton(){
+    createButtons(){
         let popUp = this.popUp;
-        let button = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+        let closeButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
 
-        button.setScale9Enabled(true);
-        button.setCapInsets(cc.rect(20,20,0,20));
-        button.setContentSize(cc.size(150, 100));
+        closeButton.setScale9Enabled(true);
+        closeButton.setCapInsets(cc.rect(20,20,0,20));
+        closeButton.setContentSize(cc.size(150, 100));
 
-        button.setTitleFontSize(26);
-        button.setTitleFontName("Snow Dream");
-        button.setTitleText("Close");
+        closeButton.setTitleFontSize(26);
+        closeButton.setTitleFontName("Pixel");
+        closeButton.setTitleText("Close");
 
-        let layoutParameter = new ccui.RelativeLayoutParameter();
-        layoutParameter.setAlign(ccui.RelativeLayoutParameter.PARENT_BOTTOM_CENTER_HORIZONTAL);
-        layoutParameter.setMargin(20,20,0,20);
-        button.setLayoutParameter(layoutParameter);
+        let layoutParameterClose = new ccui.RelativeLayoutParameter();
+        layoutParameterClose.setAlign(ccui.RelativeLayoutParameter.PARENT_BOTTOM_CENTER_HORIZONTAL);
+        layoutParameterClose.setMargin(20,20,0,20);
+        closeButton.setLayoutParameter(layoutParameterClose);
 
-        button.addClickEventListener(this.onClick.bind(this));
-        popUp.addChild(button);
+        closeButton.addClickEventListener(this.closeClick.bind(this));
+
+        let restartButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng)
+
+        restartButton.setScale9Enabled(true);
+        restartButton.setCapInsets(cc.rect(20,20,0,20));
+        restartButton.setContentSize(cc.size(150, 100));
+
+        restartButton.setTitleFontSize(26);
+        restartButton.setTitleFontName("Pixel");
+        restartButton.setTitleText("Restart");
+
+        let layoutParameterRestart = new ccui.RelativeLayoutParameter();
+        layoutParameterRestart.setAlign(ccui.RelativeLayoutParameter.PARENT_LEFT_BOTTOM);
+        layoutParameterRestart.setMargin(20,20,0,20);
+        restartButton.setLayoutParameter(layoutParameterRestart);
+
+        restartButton.addClickEventListener(this.restartClick.bind(this));
+
+        let exitButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng)
+
+        exitButton.setScale9Enabled(true);
+        exitButton.setCapInsets(cc.rect(20,20,0,20));
+        exitButton.setContentSize(cc.size(150, 100));
+
+        exitButton.setTitleFontSize(26);
+        exitButton.setTitleFontName("Pixel");
+        exitButton.setTitleText("Exit");
+
+        let layoutParameterExit = new ccui.RelativeLayoutParameter();
+        layoutParameterExit.setAlign(ccui.RelativeLayoutParameter.PARENT_RIGHT_BOTTOM);
+        layoutParameterExit.setMargin(20,20,0,20);
+        exitButton.setLayoutParameter(layoutParameterExit);
+
+        exitButton.addClickEventListener(this.exitClick.bind(this));
+
+        popUp.addChild(restartButton);
+        popUp.addChild(closeButton);
+        popUp.addChild(exitButton);
     }
 
-    onClick(){
+    closeClick(){
         let scaleTo = new cc.ScaleTo(.2, 0);
         let callFunc = new cc.CallFunc(this.onFinish, this);
         scaleTo = new cc.EaseBackIn(scaleTo)
         this.popUp.runAction(new cc.sequence(scaleTo, callFunc));
     }
 
-    onClick1(){
-        // let scaleTo = new cc.ScaleTo(.2, 0);
-        // let callFunc = new cc.CallFunc(this.onFinish, this);
-        // scaleTo = new cc.EaseBackIn(scaleTo)
-        // this.popUp.runAction(new cc.sequence(scaleTo, callFunc));
-        // let callFunc = new cc.CallFunc(this.pauseScreen, this);
-        // let scaleTo = new cc.ScaleTo(.2, 0);
-        // scaleTo = new cc.EaseBackIn(scaleTo);
-        // this.popUp1.runAction(new cc.sequence(scaleTo, callFunc));
+    restartClick(){
+        cc.director.runScene(new GameScene());
+    }
 
-        //this.pauseScreen();
-        //let callFunc = new cc.CallFunc(this.getParent().pauseGame())
+    exitClick(){
+        cc.director.runScene(new TitleScene());
+    }
+
+    pauseClick(){
         if(!this.isPaused){
             this.pauseScreen();
             this.getParent().allChildren[0].pauseGame();
@@ -156,7 +193,7 @@ class NineSliceLayout extends ccui.Layout{
 
     pauseScreen(){
             this.createPopup();
-            this.createButton();
+            this.createButtons();
             this.isPaused = true;
     }
 
