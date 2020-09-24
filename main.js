@@ -78,6 +78,10 @@
 
 cc.game.onStart = function(){
     var sys = cc.sys;
+
+    cc._canvas.width = window.innnerWidth;
+    cc._canvas.height = window.innerHeight;
+
     if(!sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));
 

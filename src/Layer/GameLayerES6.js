@@ -47,14 +47,14 @@ class GameLayerES6 extends cc.Layer{
         //for tiles
 
         //labels
-        this.score_label = new cc.LabelTTF("Score: "+ this.score, "Arial", 50);
-        this.score_label.x = this.size.width/4;
-        this.score_label.y = this.size.height/2 + 200;
-        this.space.addChild(this.score_label, 1);;
-        this.time_left_label = new cc.LabelTTF("Time: "+ this.time_left, "Arial", 50);
-        this.time_left_label.x = this.size.width/4;
-        this.time_left_label.y = 0 - this.size.height/10;
-        this.space.addChild(this.time_left_label, 1);;
+        // this.score_label = new cc.LabelTTF("Score: "+ this.score, "Arial", 50);
+        // this.score_label.x = this.size.width/4;
+        // this.score_label.y = this.size.height/2 + 200;
+        // this.space.addChild(this.score_label, 1);;
+        // this.time_left_label = new cc.LabelTTF("Time: "+ this.time_left, "Arial", 50);
+        // this.time_left_label.x = this.size.width/4;
+        // this.time_left_label.y = 0 - this.size.height/10;
+        // this.space.addChild(this.time_left_label, 1);;
         //labels
 
         this.scheduleUpdate();
@@ -63,6 +63,8 @@ class GameLayerES6 extends cc.Layer{
             onMouseUp: this.onMouseUp,
             onMouseDown: this.onMouseDown
         },this);
+
+        this.addComponent(new GameLayerResizer());
 
     }
 
@@ -319,7 +321,7 @@ class GameLayerES6 extends cc.Layer{
 
         if(this.results.length >= 3){
             this.score += this.results.length*33; 
-            this.score_label.setString("Score: "+ (this.score));
+            // this.score_label.setString("Score: "+ (this.score));
         }
 
         for(var i = 1; i < this.platform; i ++){
@@ -380,7 +382,7 @@ class GameLayerES6 extends cc.Layer{
 
     update(dt){
         this.time_left -= dt;
-        this.time_left_label.setString("Time: " + this.time_left.toFixed(2));
+        // this.time_left_label.setString("Time: " + this.time_left.toFixed(2));
         if(this.time_left <= 0 ){
             //end game here
             cc.eventManager.removeAllListeners();
@@ -395,5 +397,23 @@ class GameLayerES6 extends cc.Layer{
             }, 500);
         }
         return 0;
+    }
+
+    getScore(){
+        return this.score;
+    }
+
+    getTime(){
+        return this.time_left;
+    }
+
+    pauseGame(){
+        this.unscheduleUpdate();
+        cc.log("Paused");
+    }
+
+    contGame(){
+        this.scheduleUpdate();
+        cc.log("Resume");
     }
 }
