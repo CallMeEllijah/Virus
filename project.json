@@ -16,12 +16,12 @@
     "src/**/*.js"
   ],
   "jsList": [
+    ".es5/Component/ResizeListener.js",
     ".es5/Component/EnableOnLandscape.js",
     ".es5/Component/EnableOnPortrait.js",
     ".es5/Component/FitToParent.js",
     ".es5/Component/FitToWindow.js",
     ".es5/Component/GameLayerResizer.js",
-    ".es5/Component/ResizeListener.js",
     ".es5/Component/ToMainScene.js",
     ".es5/Component/ToTitleScreen.js",
     ".es5/Layer/EndLayer.js",

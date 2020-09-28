@@ -300,21 +300,18 @@ class GameLayerES6 extends cc.Layer{
         return 0;
     }
 
-    deleteMatchTile(){ //deletion lang ng tiles
+    endResults(){ //deletion lang ng tiles
         for(var i=0; i<this.results.length; i++){
             this.space.removeChild(this.tileArray[this.results[i].row][this.results[i].col]);
             this.tileArray[this.results[i].row][this.results[i].col]=null;
         }
 
-        if(this.results.length >= 5){
+        if(this.results.length >= 5){ //score calculation
             this.score += this.results.length * 75; 
-            this.score_label.setString("Score: "+ (this.score));
         } else if(this.results.length >= 4){
             this.score += this.results.length * 50; 
-            this.score_label.setString("Score: "+ (this.score));
         } else if(this.results.length >= 3){
             this.score += this.results.length * 25; 
-            this.score_label.setString("Score: "+ (this.score));
         }
 
         for(var i = 1; i < this.platform; i ++){
@@ -382,7 +379,7 @@ class GameLayerES6 extends cc.Layer{
             cc.director.pushScene(scene);
         }
         if(this.checkCollision()){
-            this.deleteMatchTile();
+            this.endResults();
             this.fallTileCreate();
             setTimeout(function(){
                 return 0;

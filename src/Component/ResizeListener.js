@@ -1,12 +1,8 @@
-class ResizeListener extends cc.Component{
-    constructor(){
+class ResizeListener extends cc.Component {
+    constructor() {
         super();
-        if(new.target === ResizeListener){
-            throw new TypeError("Cannot construct Abstract instances directly");
-        }
     }
-
-    onEnter(){
+    onEnter() {
         super.onEnter();
         this.listener = cc.EventListener.create({
             event: cc.EventListener.CUSTOM,
@@ -17,15 +13,14 @@ class ResizeListener extends cc.Component{
         this.isResizeContent = false;
     }
 
-    onCanvasResize(){
+    onCanvasResize() {
         this.isResizeContent = true;
     }
-
-    onResize(){
+    onResize() {
     }
 
-    update(dt){
-        if(this.isResizeContent){
+    update(dt) {
+        if (this.isResizeContent) {
             this.onResize();
             this.isResizeContent = false;
         }
