@@ -7,5 +7,12 @@ class TitleScene extends cc.Scene{
         
         let titleLayer = new TitleLayer();
         this.addChild(titleLayer)
+
+        this.allChildren = this.getChildren();
+
+        let startButton = new NineSliceLayout();
+        startButton.createStartScreen();
+
+        this.addChild(startButton);
     }
 }

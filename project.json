@@ -1,28 +1,38 @@
 {
-  "project_type": "javascript",
-  "debugMode": 1,
-  "showFPS": true,
-  "frameRate": 60,
-  "noCache": false,
-  "id": "gameCanvas",
-  "renderMode": 0,
-  "engineDir": "frameworks/cocos2d-html5",
-  "modules": [
-    "cocos2d",
-    "extensions"
-  ],
-  "jsListOrder": [
-    "src/**/*.js"
-  ],
-  "jsList": [
-    ".es5/Component/ToMainScene.js",
-    ".es5/Component/ToTitleScreen.js",
-    ".es5/Layer/EndLayer.js",
-    ".es5/Layer/GameLayerES6.js",
-    ".es5/Layer/TitleLayer.js",
-    ".es5/resource.js",
-    ".es5/Scene/EndScene.js",
-    ".es5/Scene/GameScene.js",
-    ".es5/Scene/TitleScene.js"
-  ]
+    "project_type": "javascript",
+    "debugMode": 1,
+    "showFPS": true,
+    "frameRate": 60,
+    "noCache": false,
+    "id": "gameCanvas",
+    "renderMode": 0,
+    "engineDir": "frameworks/cocos2d-html5",
+    "modules": [
+        "cocos2d",
+        "extensions"
+    ],
+    "jsListOrder": [
+        "src/Component/ResizeListener.js",
+        "src/**/*.js"
+    ],
+    "jsList": [
+        "src/Component/ResizeListener.js",
+        "src/Component/EnableOnLandscape.js",
+        "src/Component/EnableOnPortrait.js",
+        "src/Component/FitToParent.js",
+        "src/Component/FitToWindow.js",
+        "src/Component/GameLayerResizer.js",
+        "src/Component/ToMainScene.js",
+        "src/Component/ToTitleScreen.js",
+        "src/Layer/EndLayer.js",
+        "src/Layer/GameLayerES6.js",
+        "src/Layer/TitleLayer.js",
+        "src/Layouts/LandscapeLayout.js",
+        "src/Layouts/NineSliceLayout.js",
+        "src/Layouts/PortraitLayout.js",
+        "src/resource.js",
+        "src/Scene/EndScene.js",
+        "src/Scene/GameScene.js",
+        "src/Scene/TitleScene.js"
+    ]
 }
