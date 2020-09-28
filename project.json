@@ -12,14 +12,24 @@
     "extensions"
   ],
   "jsListOrder": [
+    "src/Component/ResizeListener.js",
     "src/**/*.js"
   ],
   "jsList": [
+    ".es5/Component/EnableOnLandscape.js",
+    ".es5/Component/EnableOnPortrait.js",
+    ".es5/Component/FitToParent.js",
+    ".es5/Component/FitToWindow.js",
+    ".es5/Component/GameLayerResizer.js",
+    ".es5/Component/ResizeListener.js",
     ".es5/Component/ToMainScene.js",
     ".es5/Component/ToTitleScreen.js",
     ".es5/Layer/EndLayer.js",
     ".es5/Layer/GameLayerES6.js",
     ".es5/Layer/TitleLayer.js",
+    ".es5/Layouts/LandscapeLayout.js",
+    ".es5/Layouts/NineSliceLayout.js",
+    ".es5/Layouts/PortraitLayout.js",
     ".es5/resource.js",
     ".es5/Scene/EndScene.js",
     ".es5/Scene/GameScene.js",

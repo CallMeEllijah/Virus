@@ -6,6 +6,13 @@ class HelloWorldScene2 extends cc.Scene{
     onEnter() {
         super.onEnter();
         let gameOverLayer = new GameOverLayer(this.score);
-        this.addChild(gameOverLayer)
+        this.addChild(gameOverLayer);
+
+        this.allChildren = this.getChildren();
+
+        let restartButton = new NineSliceLayout();
+        restartButton.createEndScreen();
+
+        this.addChild(restartButton);
     }   
 }
