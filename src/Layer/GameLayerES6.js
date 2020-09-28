@@ -317,8 +317,14 @@ class GameLayerES6 extends cc.Layer{
             this.tileArray[this.results[i].row][this.results[i].col]=null;
         }
 
-        if(this.results.length >= 3){
-            this.score += this.results.length*33; 
+        if(this.results.length >= 5){
+            this.score += this.results.length * 75; 
+            this.score_label.setString("Score: "+ (this.score));
+        } else if(this.results.length >= 4){
+            this.score += this.results.length * 50; 
+            this.score_label.setString("Score: "+ (this.score));
+        } else if(this.results.length >= 3){
+            this.score += this.results.length * 25; 
             this.score_label.setString("Score: "+ (this.score));
         }
 
