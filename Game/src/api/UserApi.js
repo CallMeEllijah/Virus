@@ -1,13 +1,13 @@
-const BASE_URL = "http://localhost:8080/api/leaderboard"
+const BASE_URL = "http://localhost:8080/api/leaderboard/"
 class UserApi {
 
 
     static async CreateUser(new_user, score){
         return BackendRequest.Post(`${BASE_URL}`, { user: new_user, score: score })
-        .then((resp) => {
-            // console.log(resp);
-            return resp.body.user;
-        }) 
+        // .then((resp) => {
+        //     // console.log(resp);
+        //     return resp.body.user;
+        // }) 
     }
 
     static async PatchUser(id, changes){
@@ -23,7 +23,7 @@ class UserApi {
     }
 
     static async GetUser(id){
-        return BackendRequest.Get(`${BASE_URL}${id}`)
+        return BackendRequest.Get(`${BASE_URL}`)
         .then((resp) => {
             //console.log(resp);
             return resp.body.user;

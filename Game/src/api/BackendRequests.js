@@ -5,6 +5,7 @@ class BackendRequest {
         request.setRequestHeader("Content-Type","application/json");
         request.onreadystatechange = function () {
             if (request.readyState == 4) {
+                console.log(`${request.status}`);
                 let result = {}
                 if(request.status >= 200 && request.status < 400){
                     result.status = request.status
@@ -33,12 +34,15 @@ class BackendRequest {
     }
 
     static Post(url, request_body){
-        let postPromise = new Promise(function(resolve, reject){
-            let request = BackendRequest._generateRequest("POST", url, resolve, reject);
-            request.send(JSON.stringify(request_body));
-        });
-        
-        return postPromise;
+        // let postPromise = new Promise(function(resolve, reject){
+        //     let request = BackendRequest._generateRequest("POST", url, resolve, reject);
+        //     request.send(JSON.stringify(request_body));
+        // });
+        // return postPromise;
+        let request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:8080/api/leaderboard");
+        request.setRequestHeader("Content-Type","application/json");
+        request.send(JSON.stringify(request_body))
     } 
 
     static Patch(url, request_body){

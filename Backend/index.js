@@ -1,9 +1,12 @@
 let express = require('express')
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
+let cors = require('cors')
 
 let app = express();
 var port = process.env.PORT || 8080;
+
+app.use(cors());
 app.use(bodyParser.urlencoded({
     extended: true
 }));

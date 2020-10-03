@@ -16,6 +16,12 @@ class EndScene extends cc.Scene{
         sliceLayout.createUserNameBox();
 
         this.addChild(sliceLayout);
+
+        // BackendRequest.Post(`${BASE_URL}`)
+        // .then((resp) => {
+        //     // console.log(resp);
+        //     return resp.body.user;
+        // }) 
     }
     async addToLeaderboard(name, score){
         let user = await UserApi.CreateUser({
@@ -23,6 +29,8 @@ class EndScene extends cc.Scene{
             score: score
         })
         console.log(user);
+        // let user = await UserApi.GetUser();
+        // console.log(user);
     }
 
 }
