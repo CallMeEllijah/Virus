@@ -18,7 +18,7 @@ class NineSliceLayout extends ccui.Layout{
         popup.setPositionType(ccui.Widget.POSITION_PERCENT);
         popup.setPositionPercent(cc.p(.5,.5));
         popup.setSizeType(ccui.Widget.SIZE_PERCENT);
-        popup.setSizePercent(cc.p(.8,.8));
+        popup.setSizePercent(cc.p(.5,.8));
 
         this.addChild(popup);
 
@@ -31,17 +31,29 @@ class NineSliceLayout extends ccui.Layout{
         startButton.setTitleFontName("Pixel");
         startButton.setTitleText("Start");
 
-        // startButton.setTitleFontSize(36);
-        // startButton.setTitleFontName("Pixel");
-        // startButton.setTitleText("Start");
-
         let layoutParameter1 = new ccui.RelativeLayoutParameter();
-        layoutParameter1.setAlign(ccui.RelativeLayoutParameter.PARENT_BOTTOM_CENTER_HORIZONTAL);
+        layoutParameter1.setAlign(ccui.RelativeLayoutParameter.PARENT_LEFT_BOTTOM);
         layoutParameter1.setMargin(0,0,0,0);
         startButton.setLayoutParameter(layoutParameter1);
 
+        let leaderboardButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+
+        leaderboardButton.setScale9Enabled(true);
+        leaderboardButton.setCapInsets(cc.rect(20,20,0,20));
+        leaderboardButton.setContentSize(cc.size(200, 50));
+        leaderboardButton.setTitleFontSize(26);
+        leaderboardButton.setTitleFontName("Pixel");
+        leaderboardButton.setTitleText("Leaderboard");
+
+        let layoutParameterLeaderboard = new ccui.RelativeLayoutParameter();
+        layoutParameterLeaderboard.setAlign(ccui.RelativeLayoutParameter.PARENT_RIGHT_BOTTOM);
+        layoutParameterLeaderboard.setMargin(0,0,0,0);
+        leaderboardButton.setLayoutParameter(layoutParameterLeaderboard);
+
         startButton.addClickEventListener(this.startButtonClick.bind(this));
+
         popup.addChild(startButton);
+        popup.addChild(leaderboardButton);
     }
 
     createEndScreen(){//create exit and restart buttons in end layer
