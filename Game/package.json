@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Support ES6/ES7 futures in cocos2d-js with babel.js",
   "scripts": {
+    "type": "module",
     "compile": "./node_modules/.bin/babel --presets es2015,stage-0 -d .es5/ src/ && node devutils/project.js",
     "server": "http-server -o -p 9090 .",
     "watch": "onchange 'src/**/*.js' 'main.js' -- npm run compile",

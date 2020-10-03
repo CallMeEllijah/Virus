@@ -17,6 +17,8 @@
     ],
     "jsList": [
         "src/Component/ResizeListener.js",
+        "src/api/BackendRequests.js",
+        "src/api/UserApi.js",
         "src/Component/EnableOnLandscape.js",
         "src/Component/EnableOnPortrait.js",
         "src/Component/FitToParent.js",

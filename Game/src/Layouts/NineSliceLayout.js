@@ -1,5 +1,3 @@
-// const { default: axios } = require("axios");
-
 class NineSliceLayout extends ccui.Layout{
     constructor(){
         super();
@@ -315,10 +313,7 @@ class NineSliceLayout extends ccui.Layout{
         
     }
 
-    confirmButtonClick(){
-        axios.post("http://localholst:8080", {
-            name: this.textField.string,
-            score: this.finalScore
-        });
+    async confirmButtonClick(){
+        this.getParent().addToLeaderboard(this.textField.string, this.finalScore);
     }
 }

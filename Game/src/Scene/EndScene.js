@@ -5,6 +5,7 @@ class EndScene extends cc.Scene{
     }
     onEnter() {
         super.onEnter();
+
         let gameOverLayer = new GameOverLayer(this.score);
         this.addChild(gameOverLayer);
 
@@ -15,6 +16,13 @@ class EndScene extends cc.Scene{
         sliceLayout.createUserNameBox();
 
         this.addChild(sliceLayout);
+    }
+    async addToLeaderboard(name, score){
+        let user = await UserApi.CreateUser({
+            name: name,
+            score: score
+        })
+        console.log(user);
     }
 
 }
