@@ -1,4 +1,4 @@
-class HelloWorldScene2 extends cc.Scene{
+class EndScene extends cc.Scene{
     constructor(score){
         super();
         this.score = score;
@@ -10,9 +10,11 @@ class HelloWorldScene2 extends cc.Scene{
 
         this.allChildren = this.getChildren();
 
-        let restartButton = new NineSliceLayout();
-        restartButton.createEndScreen();
+        let sliceLayout = new NineSliceLayout();
+        sliceLayout.createEndScreen(this.score);
+        sliceLayout.createUserNameBox();
 
-        this.addChild(restartButton);
-    }   
+        this.addChild(sliceLayout);
+    }
+
 }

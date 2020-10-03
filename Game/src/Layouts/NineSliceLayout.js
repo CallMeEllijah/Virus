@@ -1,15 +1,20 @@
+// const { default: axios } = require("axios");
+
 class NineSliceLayout extends ccui.Layout{
     constructor(){
         super();
+        // axios = require('axios');
         this.setContentSize(cc.winSize);
         this.scheduleUpdate();
         this.addComponent(new FitToWindow());
-
-        //this.createPopup();
-        //this.createButton();
-        //this.createPauseButton();
         
+        this.scores;
+        this.users;
         this.isPaused = false;
+    }
+
+    onEnter(){
+        super.onEnter();
     }
 
     createStartScreen(){//create start button in title layer
@@ -51,6 +56,7 @@ class NineSliceLayout extends ccui.Layout{
         leaderboardButton.setLayoutParameter(layoutParameterLeaderboard);
 
         startButton.addClickEventListener(this.startButtonClick.bind(this));
+        leaderboardButton.addClickEventListener(this.viewLeaderboardClick.bind(this));
 
         popup.addChild(startButton);
         popup.addChild(leaderboardButton);
@@ -159,6 +165,56 @@ class NineSliceLayout extends ccui.Layout{
         popUp.addChild(text);
     }
 
+    createUserNameBox(score){
+        let popup = new ccui.RelativeBox();
+        this.popup = popup;
+        this.finalScore = 20
+        this.popup.setAnchorPoint(cc.p(.5,.5));
+        this.popup.setPositionType(ccui.Widget.POSITION_PERCENT);
+        this.popup.setPositionPercent(cc.p(.5,.5));
+        this.popup.setSizeType(ccui.Widget.SIZE_PERCENT);
+        this.popup.setSizePercent(cc.p(.8,.8));
+
+        this.popup.setBackGroundImageScale9Enabled(true);
+        this.popup.setBackGroundImage(res.popupBase, ccui.Widget.LOCAL_TEXTURE);
+        this.popup.setBackGroundImageCapInsets(cc.rect(0,0,0,0))
+
+        this.textField = new ccui.TextField();
+        this.textField.setTouchEnabled(true);
+        this.textField.placeHolder = "Input name here";
+        this.textField.fontSize = 30;
+        this.textField.setPlaceHolderColor(cc.color(255,255,255,255));
+        this.textField.setTextColor(cc.color(255,255,255,255));
+
+        let layoutParameterTextField = new ccui.RelativeLayoutParameter();
+        layoutParameterTextField.setAlign(ccui.RelativeLayoutParameter.CENTER_IN_PARENT);
+        layoutParameterTextField.setMargin(20,20,0,20);
+        this.textField.setLayoutParameter(layoutParameterTextField);
+
+        let confirmButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+
+        confirmButton.setScale9Enabled(true);
+        confirmButton.setCapInsets(cc.rect(20,20,0,20));
+        confirmButton.setContentSize(cc.size(150, 100));
+
+        confirmButton.setTitleFontSize(26);
+        confirmButton.setTitleFontName("Pixel");
+        confirmButton.setTitleText("Confirm");
+
+        let layoutParameterClose = new ccui.RelativeLayoutParameter();
+        layoutParameterClose.setAlign(ccui.RelativeLayoutParameter.PARENT_BOTTOM_CENTER_HORIZONTAL);
+        layoutParameterClose.setMargin(20,20,0,20);
+        confirmButton.setLayoutParameter(layoutParameterClose);
+
+        this.user = this.textField.string;
+        confirmButton.addClickEventListener(this.confirmButtonClick.bind(this));
+
+
+        this.popup.addChild(this.textField)
+        this.popup.addChild(confirmButton)
+        this.addChild(this.popup);
+    }
+
     createButtons(){//create buttons in pause popup
         let popUp = this.popUp;
         let closeButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
@@ -253,5 +309,16 @@ class NineSliceLayout extends ccui.Layout{
 
     startButtonClick(){//for start button in title layer
         this.getParent().allChildren[0].toGameScene();
+    }
+
+    viewLeaderboardClick(){
+        
+    }
+
+    confirmButtonClick(){
+        axios.post("http://localholst:8080", {
+            name: this.textField.string,
+            score: this.finalScore
+        });
     }
 }
