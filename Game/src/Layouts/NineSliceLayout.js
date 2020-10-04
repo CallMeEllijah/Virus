@@ -1,3 +1,5 @@
+var scores
+
 class NineSliceLayout extends ccui.Layout{
     constructor(){
         super();
@@ -6,8 +8,6 @@ class NineSliceLayout extends ccui.Layout{
         this.scheduleUpdate();
         this.addComponent(new FitToWindow());
         
-        this.scores;
-        this.users;
         this.isPaused = false;
     }
 
@@ -16,6 +16,45 @@ class NineSliceLayout extends ccui.Layout{
     }
 
     createStartScreen(){//create start button in title layer
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:8080/api/leaderboard', true);
+
+        request.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                if (this.status >= 200 && this.status < 400) {
+                    var data = JSON.parse(this.responseText);
+                    cc.log(data);
+
+                    scores = new Array(data.length);
+
+                    for (var i = 0; i < data.length; i++) { 
+                        scores[i] = new Array(2); 
+                    } 
+
+                    for(var i = 0; i < data.length; i++){
+                        scores[i][0] = data[i].name;
+                        scores[i][1] = data[i].score;
+                    }
+
+                    scores.sort(function(a, b){
+                        if (a[1] === b[1]) {
+                            return 0;
+                        }
+                        else {
+                            return (a[1] > b[1]) ? -1 : 1;
+                        }
+                    });
+                    cc.log(scores[0]);
+                    //showLeaderboard();
+                } else {
+                    cc.log("error");
+                }
+            }
+        };
+        request.send();
+        request = null;
+
         let popup = new ccui.RelativeBox();
         popup.setAnchorPoint(cc.p(.5,.5));
         popup.setPositionType(ccui.Widget.POSITION_PERCENT);
@@ -164,26 +203,35 @@ class NineSliceLayout extends ccui.Layout{
     }
 
     createUserNameBox(score){
-        let popup = new ccui.RelativeBox();
-        this.popup = popup;
+        let popupUser = new ccui.RelativeBox();
+        this.popupUser = popupUser;
 
         this.finalScore = score;
         cc.log(score);
 
-        this.popup.setAnchorPoint(cc.p(.5,.5));
-        this.popup.setPositionType(ccui.Widget.POSITION_PERCENT);
-        this.popup.setPositionPercent(cc.p(.5,.5));
-        this.popup.setSizeType(ccui.Widget.SIZE_PERCENT);
-        this.popup.setSizePercent(cc.p(.8,.8));
+        this.popupUser.setAnchorPoint(cc.p(.5,.5));
+        this.popupUser.setPositionType(ccui.Widget.POSITION_PERCENT);
+        this.popupUser.setPositionPercent(cc.p(.5,.5));
+        this.popupUser.setSizeType(ccui.Widget.SIZE_PERCENT);
+        this.popupUser.setSizePercent(cc.p(1,.8));
 
-        this.popup.setBackGroundImageScale9Enabled(true);
-        this.popup.setBackGroundImage(res.popupBase, ccui.Widget.LOCAL_TEXTURE);
-        this.popup.setBackGroundImageCapInsets(cc.rect(0,0,0,0))
+        this.popupUser.setBackGroundImageScale9Enabled(true);
+        this.popupUser.setBackGroundImage(res.popupBase, ccui.Widget.LOCAL_TEXTURE);
+        this.popupUser.setBackGroundImageCapInsets(cc.rect(0,0,0,0))
+
+        let userHeader = new ccui.Text("Input name for leaderboard:", "Pixel", 30)
+        let layoutParameterUserHeader = new ccui.RelativeLayoutParameter();
+        layoutParameterUserHeader.setAlign(ccui.RelativeLayoutParameter.PARENT_TOP_CENTER_HORIZONTAL);
+        layoutParameterUserHeader.setMargin(20,100,0,20);
+        userHeader.setLayoutParameter(layoutParameterUserHeader);
 
         this.textField = new ccui.TextField();
         this.textField.setTouchEnabled(true);
-        this.textField.placeHolder = "Input name here";
-        this.textField.fontSize = 30;
+        this.textField.setMaxLengthEnabled(true);
+        this.textField.setMaxLength(3)
+        this.textField.setFontName("Pixel")
+        this.textField.setPlaceHolder("Name (3 characters)")
+        this.textField.fontSize = 45;
         this.textField.setPlaceHolderColor(cc.color(255,255,255,255));
         this.textField.setTextColor(cc.color(255,255,255,255));
 
@@ -196,7 +244,7 @@ class NineSliceLayout extends ccui.Layout{
 
         confirmButton.setScale9Enabled(true);
         confirmButton.setCapInsets(cc.rect(20,20,0,20));
-        confirmButton.setContentSize(cc.size(150, 100));
+        confirmButton.setContentSize(cc.size(150, 50));
 
         confirmButton.setTitleFontSize(26);
         confirmButton.setTitleFontName("Pixel");
@@ -211,9 +259,10 @@ class NineSliceLayout extends ccui.Layout{
         confirmButton.addClickEventListener(this.confirmButtonClick.bind(this));
 
 
-        this.popup.addChild(this.textField)
-        this.popup.addChild(confirmButton)
-        this.addChild(this.popup);
+        this.popupUser.addChild(this.textField)
+        this.popupUser.addChild(confirmButton)
+        this.popupUser.addChild(userHeader);
+        this.addChild(this.popupUser);
     }
 
     createButtons(){//create buttons in pause popup
@@ -281,6 +330,20 @@ class NineSliceLayout extends ccui.Layout{
         this.popUp.runAction(new cc.sequence(scaleTo, callFunc));
     }
 
+    closeLeaderboard(){//close leaderboard popup
+        let scaleTo = new cc.ScaleTo(.2, 0);
+        let callFunc = new cc.CallFunc(this.finish, this);
+        scaleTo = new cc.EaseBackIn(scaleTo)
+        this.popupLeaderboard.runAction(new cc.sequence(scaleTo, callFunc));
+    }
+
+    closeUserPopup(){
+        let scaleTo = new cc.ScaleTo(.2, 0);
+        let callFunc = new cc.CallFunc(this.finish, this);
+        scaleTo = new cc.EaseBackIn(scaleTo)
+        this.popupUser.runAction(new cc.sequence(scaleTo, callFunc));
+    }
+
     restartClick(){//restart game
         cc.director.runScene(new GameScene());
     }
@@ -308,55 +371,87 @@ class NineSliceLayout extends ccui.Layout{
         this.isPaused = false;
     }
 
+    finish(){
+        this.getParent().removeChild(this.popupLeaderboard);
+    }
+
     startButtonClick(){//for start button in title layer
         this.getParent().allChildren[0].toGameScene();
     }
 
     viewLeaderboardClick(){
-
-        var request = new XMLHttpRequest();
-        request.open('GET', 'http://localhost:8080/api/leaderboard', true);
-
-        request.onreadystatechange = function() {
-            if (this.readyState === 4) {
-                if (this.status >= 200 && this.status < 400) {
-                    var data = JSON.parse(this.responseText);
-                    cc.log(data);
-
-                    var scores = new Array(data.length);
-
-                    for (var i = 0; i < data.length; i++) { 
-                        scores[i] = new Array(2); 
-                    } 
-
-                    for(var i = 0; i < data.length; i++){
-                        scores[i][0] = data[i].name;
-                        scores[i][1] = data[i].score;
-                    }
-
-                    scores.sort(function(a, b){
-                        if (a[1] === b[1]) {
-                            return 0;
-                        }
-                        else {
-                            return (a[1] > b[1]) ? -1 : 1;
-                        }
-                    });
-                    cc.log(scores);
-                } else {
-                    cc.log("error");
-                }
-            }
-        };
-        request.send();
-        request = null;
-
         //add here the showing of leaderboard through popup :(
+        this.popupLeaderboard = new ccui.RelativeBox();
+        this.popupLeaderboard.setAnchorPoint(cc.p(.5,.5));
+        this.popupLeaderboard.setPositionType(ccui.Widget.POSITION_PERCENT);
+        this.popupLeaderboard.setPositionPercent(cc.p(.5,.5));
+        this.popupLeaderboard.setSizeType(ccui.Widget.SIZE_PERCENT);
+        this.popupLeaderboard.setSizePercent(cc.p(.8,.8));
+    
+        this.popupLeaderboard.setBackGroundImageScale9Enabled(true);
+        this.popupLeaderboard.setBackGroundImage(res.popupBase, ccui.Widget.LOCAL_TEXTURE);
+        this.popupLeaderboard.setBackGroundImageCapInsets(cc.rect(0,0,0,0))
+    
+        let closeButton = new ccui.Button(res.button9slicePng, res.button9sliceSelectedPng);
+    
+        closeButton.setScale9Enabled(true);
+        closeButton.setCapInsets(cc.rect(20,20,0,20));
+        closeButton.setContentSize(cc.size(150, 100));
+    
+        closeButton.setTitleFontSize(26);
+        closeButton.setTitleFontName("Pixel");
+        closeButton.setTitleText("Close");
+    
+        let layoutParameterClose = new ccui.RelativeLayoutParameter();
+        layoutParameterClose.setAlign(ccui.RelativeLayoutParameter.PARENT_BOTTOM_CENTER_HORIZONTAL);
+        layoutParameterClose.setMargin(20,20,0,20);
+        closeButton.setLayoutParameter(layoutParameterClose);
+    
+        closeButton.addClickEventListener(this.closeLeaderboard.bind(this));
+    
+        let leaderboardName = new ccui.Text("1. "+scores[0][0]+"\n"+"2. "+scores[1][0]+"\n"+"3. "+scores[2][0]+"\n"+"4. "+scores[3][0] + "\n"+"5. "+scores[4][0], "Pixel", 45);
+    
+        let layoutParameterText = new ccui.RelativeLayoutParameter();
+        layoutParameterText.setAlign(ccui.RelativeLayoutParameter.PARENT_LEFT_CENTER_VERTICAL)
+        layoutParameterText.setMargin(30,20,0,0)
+        leaderboardName.setLayoutParameter(layoutParameterText)
 
+        let leaderboardScore = new ccui.Text(scores[0][1]+"\n"+scores[1][1]+"\n"+scores[2][1]+"\n"+scores[3][1]+"\n"+scores[4][1], "Pixel", 45);
+
+        let layoutParameterScore = new ccui.RelativeLayoutParameter();
+        layoutParameterScore.setAlign(ccui.RelativeLayoutParameter.PARENT_RIGHT_CENTER_VERTICAL);
+        layoutParameterScore.setMargin(0,0,60,0);
+        leaderboardScore.setLayoutParameter(layoutParameterScore);
+
+        let leaderboardNameHeader = new ccui.Text("Name", "Pixel", 45)
+        let layoutParameterNameHeader = new ccui.RelativeLayoutParameter();
+        layoutParameterNameHeader.setAlign(ccui.RelativeLayoutParameter.PARENT_TOP_LEFT);
+        layoutParameterNameHeader.setMargin(60,90,0,0);
+        leaderboardNameHeader.setLayoutParameter(layoutParameterNameHeader);
+
+        let leaderboardScoreHeader = new ccui.Text("Score", "Pixel", 45)
+        let layoutParameterScoreHeader = new ccui.RelativeLayoutParameter();
+        layoutParameterScoreHeader.setAlign(ccui.RelativeLayoutParameter.PARENT_TOP_RIGHT);
+        layoutParameterScoreHeader.setMargin(0,90,60,0);
+        leaderboardScoreHeader.setLayoutParameter(layoutParameterScoreHeader);
+
+        let leaderboardTitleHeader = new ccui.Text("LEADERBOARD", "Pixel", 45)
+        let layoutParameterTitleHeader = new ccui.RelativeLayoutParameter();
+        layoutParameterTitleHeader.setAlign(ccui.RelativeLayoutParameter.PARENT_TOP_CENTER_HORIZONTAL);
+        layoutParameterTitleHeader.setMargin(0,30,0,0);
+        leaderboardTitleHeader.setLayoutParameter(layoutParameterTitleHeader);
+    
+        this.popupLeaderboard.addChild(closeButton);
+        this.popupLeaderboard.addChild(leaderboardName);
+        this.popupLeaderboard.addChild(leaderboardScore);
+        this.popupLeaderboard.addChild(leaderboardNameHeader);
+        this.popupLeaderboard.addChild(leaderboardScoreHeader);
+        this.popupLeaderboard.addChild(leaderboardTitleHeader);
+        this.addChild(this.popupLeaderboard)
     }
 
     async confirmButtonClick(){
         this.getParent().addToLeaderboard(this.textField.string, this.finalScore);
-        this.getParent().removeChild(this.popUp);
+        this.closeUserPopup();
     }
 }
