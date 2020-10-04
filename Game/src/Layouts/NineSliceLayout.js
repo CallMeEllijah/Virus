@@ -450,7 +450,7 @@ class NineSliceLayout extends ccui.Layout{
         this.addChild(this.popupLeaderboard)
     }
 
-    async confirmButtonClick(){
+    confirmButtonClick(){
         this.getParent().addToLeaderboard(this.textField.string, this.finalScore);
         this.closeUserPopup();
     }

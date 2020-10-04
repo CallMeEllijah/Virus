@@ -9,7 +9,7 @@ class GameLayerES6 extends cc.Layer{
         this.platform = 8;
         this.tileSize = 60;
         this.score = 0;
-        this.time_left = 5;
+        this.time_left = 120;
 
         this.tileArray = [];
         this.tileTypes = 6;

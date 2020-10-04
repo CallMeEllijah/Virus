@@ -20,7 +20,7 @@ class EndScene extends cc.Scene{
 
     }
 
-    async addToLeaderboard(name, score){
+    addToLeaderboard(name, score){
         var request = new XMLHttpRequest();
         cc.log(name);
         cc.log(score);
