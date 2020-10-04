@@ -8,10 +8,6 @@ exports.add = function (req, res) {
     user.save(function (err) {
         if (err)
             res.json(err);
-    res.json({
-            message: "New player and score Added!",
-            data: user
-        });
     });
 };
 

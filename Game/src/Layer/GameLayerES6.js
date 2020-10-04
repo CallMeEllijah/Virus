@@ -9,7 +9,7 @@ class GameLayerES6 extends cc.Layer{
         this.platform = 8;
         this.tileSize = 60;
         this.score = 0;
-        this.time_left = 120;
+        this.time_left = 5;
 
         this.tileArray = [];
         this.tileTypes = 6;
@@ -375,7 +375,7 @@ class GameLayerES6 extends cc.Layer{
         if(this.time_left <= 0 ){
             //end game here
             cc.eventManager.removeAllListeners();
-            var scene = new HelloWorldScene2(this.score);
+            var scene = new EndScene(this.score);
             cc.director.pushScene(scene);
         }
         if(this.checkCollision()){

@@ -13,24 +13,23 @@ class EndScene extends cc.Scene{
 
         let sliceLayout = new NineSliceLayout();
         sliceLayout.createEndScreen(this.score);
-        sliceLayout.createUserNameBox();
+        sliceLayout.createUserNameBox(this.score);
 
         this.addChild(sliceLayout);
+        cc.log(this);
 
-        // BackendRequest.Post(`${BASE_URL}`)
-        // .then((resp) => {
-        //     // console.log(resp);
-        //     return resp.body.user;
-        // }) 
     }
+
     async addToLeaderboard(name, score){
-        let user = await UserApi.CreateUser({
-            name: name,
-            score: score
-        })
-        console.log(user);
-        // let user = await UserApi.GetUser();
-        // console.log(user);
+        var request = new XMLHttpRequest();
+        cc.log(name);
+        cc.log(score);
+        request.open('POST', 'http://localhost:8080/api/leaderboard');
+        request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        request.send(JSON.stringify({
+            "name": name,
+            "score": score
+        }));
     }
 
 }

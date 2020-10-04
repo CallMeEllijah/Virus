@@ -166,7 +166,10 @@ class NineSliceLayout extends ccui.Layout{
     createUserNameBox(score){
         let popup = new ccui.RelativeBox();
         this.popup = popup;
-        this.finalScore = 20
+
+        this.finalScore = score;
+        cc.log(score);
+
         this.popup.setAnchorPoint(cc.p(.5,.5));
         this.popup.setPositionType(ccui.Widget.POSITION_PERCENT);
         this.popup.setPositionPercent(cc.p(.5,.5));
@@ -310,10 +313,50 @@ class NineSliceLayout extends ccui.Layout{
     }
 
     viewLeaderboardClick(){
-        
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:8080/api/leaderboard', true);
+
+        request.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                if (this.status >= 200 && this.status < 400) {
+                    var data = JSON.parse(this.responseText);
+                    cc.log(data);
+
+                    var scores = new Array(data.length);
+
+                    for (var i = 0; i < data.length; i++) { 
+                        scores[i] = new Array(2); 
+                    } 
+
+                    for(var i = 0; i < data.length; i++){
+                        scores[i][0] = data[i].name;
+                        scores[i][1] = data[i].score;
+                    }
+
+                    scores.sort(function(a, b){
+                        if (a[1] === b[1]) {
+                            return 0;
+                        }
+                        else {
+                            return (a[1] > b[1]) ? -1 : 1;
+                        }
+                    });
+                    cc.log(scores);
+                } else {
+                    cc.log("error");
+                }
+            }
+        };
+        request.send();
+        request = null;
+
+        //add here the showing of leaderboard through popup :(
+
     }
 
     async confirmButtonClick(){
         this.getParent().addToLeaderboard(this.textField.string, this.finalScore);
+        this.getParent().removeChild(this.popUp);
     }
 }
